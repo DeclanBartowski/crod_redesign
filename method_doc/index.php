@@ -1,13 +1,13 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Новости");
+$APPLICATION->SetTitle("Методические рекомендации");
 ?> <?$APPLICATION->IncludeComponent(
-	"bitrix:news", 
-	"docs", 
+	"bitrix:news",
+	"docs",
 	array(
 		"IBLOCK_TYPE" => "documents",
 		"IBLOCK_ID" => "21",
-		"NEWS_COUNT" => "20",
+		"NEWS_COUNT" => "18",
 		"USE_SEARCH" => "N",
 		"USE_RSS" => "Y",
 		"NUM_NEWS" => "20",
@@ -43,7 +43,7 @@ $APPLICATION->SetTitle("Новости");
 		"SET_TITLE" => "Y",
 		"SET_STATUS_404" => "N",
 		"INCLUDE_IBLOCK_INTO_CHAIN" => "N",
-		"ADD_SECTIONS_CHAIN" => "N",
+		"ADD_SECTIONS_CHAIN" => "Y",
 		"USE_PERMISSIONS" => "N",
 		"PREVIEW_TRUNCATE_LEN" => "",
 		"LIST_ACTIVE_DATE_FORMAT" => "j F Y",
@@ -82,7 +82,7 @@ $APPLICATION->SetTitle("Новости");
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"PAGER_TITLE" => "Новости",
 		"PAGER_SHOW_ALWAYS" => "N",
-		"PAGER_TEMPLATE" => "mm_pagination",
+		"PAGER_TEMPLATE" => "round",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
 		"PAGER_SHOW_ALL" => "N",
@@ -123,12 +123,12 @@ $APPLICATION->SetTitle("Новости");
 		"SEF_URL_TEMPLATES" => array(
 			"news" => "",
 			"section" => "#SECTION_CODE#/",
-			"detail" => "#ELEMENT_CODE#/",
+			"detail" => "#SECTION_CODE#/#ELEMENT_CODE#/",
 			"rss" => "rss/",
 			"rss_section" => "#SECTION_CODE#/rss/",
 		)
 	),
 	false
-);?> 
+);?>
 <br />
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

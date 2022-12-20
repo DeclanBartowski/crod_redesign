@@ -2,12 +2,12 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Новости");
 ?> <?$APPLICATION->IncludeComponent(
-	"bitrix:news", 
-	"news", 
+	"bitrix:news",
+	"news",
 	array(
 		"IBLOCK_TYPE" => "news",
 		"IBLOCK_ID" => "2",
-		"NEWS_COUNT" => "20",
+		"NEWS_COUNT" => "12",
 		"USE_SEARCH" => "N",
 		"USE_RSS" => "N",
 		"NUM_NEWS" => "20",
@@ -63,7 +63,9 @@ $APPLICATION->SetTitle("Новости");
 		"DETAIL_ACTIVE_DATE_FORMAT" => "j F Y",
 		"DETAIL_FIELD_CODE" => array(
 			0 => "PREVIEW_PICTURE",
-			1 => "",
+			1 => "PREVIEW_TEXT",
+			2 => "CREATED_USER_NAME",
+			3 => "CREATED_BY",
 		),
 		"DETAIL_PROPERTY_CODE" => array(
 			0 => "",
@@ -78,7 +80,7 @@ $APPLICATION->SetTitle("Новости");
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"PAGER_TITLE" => "Новости",
 		"PAGER_SHOW_ALWAYS" => "N",
-		"PAGER_TEMPLATE" => "mm_pagination",
+		"PAGER_TEMPLATE" => "round",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
 		"PAGER_SHOW_ALL" => "N",
@@ -113,7 +115,7 @@ $APPLICATION->SetTitle("Новости");
 		"SHARE_SHORTEN_URL_KEY" => "",
 		"DETAIL_SET_CANONICAL_URL" => "N",
 		"PAGER_BASE_LINK_ENABLE" => "N",
-		"SHOW_404" => "N",
+		"SHOW_404" => "Y",
 		"MESSAGE_404" => "",
 		"NEWS_LIMIT" => "5",
 		"SEF_URL_TEMPLATES" => array(
@@ -123,6 +125,5 @@ $APPLICATION->SetTitle("Новости");
 		)
 	),
 	false
-);?> 
-<br />
+);?>
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

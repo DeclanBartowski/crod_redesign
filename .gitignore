@@ -1,5 +1,5 @@
-upload/
-bitrix/
+/upload/
+/bitrix/
 *.xml
 *.config
 *.sql
