@@ -1,0 +1,6 @@
+<?
+$sSectionName = "Муниципалитет";
+$arDirProperties = Array(
+
+);
+?>

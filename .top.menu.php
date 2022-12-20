@@ -1,0 +1,53 @@
+<?
+$aMenuLinks = Array(
+	Array(
+		"Новости", 
+		"/news/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Предметы", 
+		"/subjects/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Расписание олимпиад", 
+		"/timetable/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Школьный этап (Сириус)", 
+		"https://siriusolymp.ru/school2022/2", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Методические рекомендации", 
+		"/method_doc/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Документы", 
+		"/normative/", 
+		Array(), 
+		Array(), 
+		"" 
+	),
+	Array(
+		"Контакты", 
+		"/contacts/", 
+		Array(), 
+		Array(), 
+		"" 
+	)
+);
+?>
