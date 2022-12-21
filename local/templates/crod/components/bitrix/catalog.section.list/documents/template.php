@@ -34,18 +34,16 @@ $this->setFrameMode(true);
 
     <div class="tabs-results-box tab-light js-tab-block" data-tab="documents_<?= $key ?>">
         <div class="items-wrap items-columns">
-
-
-            <? foreach ($arResult['COMBINE']['SUB'][$value['ID']] as $item): ?>
-
             <?
-                \Bitrix\Main\Diag\Debug::dump($value['ID']);
-                \Bitrix\Main\Diag\Debug::dump($item['ID']);
-
+            $id = end($arResult['COMBINE']['SUB'][$value['ID']])['ID'];
+            foreach ($arResult['COMBINE']['SUB'][$value['ID']] as $item): ?>
+                <?
+                $url = '/normative/';
+                $url .= ($id == $item['ID']) ? $value['ID'] . '/type/' : $item['ID'] . '/';
                 ?>
-
                 <div class="item-wrap">
-                    <a href="" class="item-tile-folder <? if ($item['ELEMENT_CNT'] < 1): ?>tile-disabled<? endif; ?>">
+                    <a href="<?= $url ?>"
+                       class="item-tile-folder <? if ($item['ELEMENT_CNT'] < 1): ?>tile-disabled<? endif; ?>">
                             <span class="tile-ico">
                                 <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/folder.svg" alt="">
                             </span>

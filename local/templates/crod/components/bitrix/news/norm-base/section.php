@@ -11,54 +11,67 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-$rs_Section = CIBlockSection::GetList(array('name' => 'desc'), array('IBLOCK_ID' => $arParams['IBLOCK_ID'], "SECTION_ID" => $arResult['VARIABLES']['SECTION_ID'], "DEPTH_LEVEL" => '2'));
-
-$res = CIBlockSection::GetByID($arResult['VARIABLES']['SECTION_ID']);
-if($ar_res = $res->GetNext()){
-    $APPLICATION->AddChainItem(($ar_res['NAME']-1)."-".$ar_res['NAME'], $arParams['SEF_FOLDER'].$arResult['VARIABLES']['SECTION_ID']."/");
-    $APPLICATION->SetTitle("Нормативная база за ".($ar_res['NAME']-1)."-".$ar_res['NAME']." год");
-}else{
-    fun404();
-}
-
-$inFirst = 0;
+\Bitrix\Main\Loader::includeModule('iblock');
+$section = \Bitrix\Iblock\SectionTable::getById($arResult ["VARIABLES"]["SECTION_ID"])->fetch();
+$APPLICATION->AddChainItem($section['NAME'], 'javascript:void(0)');
 ?>
-<div class="link-list__wrapper">
-    <ul class="link-list">
-        <?while($ar_Section = $rs_Section->Fetch()) {
-            $subject = $ar_Section['NAME'];
-            $pattern = '/муниципальн/';
-            preg_match($pattern, $subject, $matches, PREG_OFFSET_CAPTURE, 3);
-           if(count($matches)>0){?>
-                <li class="link-list__item">
-                    <p class="link-list__header"><?= $ar_Section['NAME']?></p>
-                    <ul class="link-list link-list-scroll">
-                        <?
-                        $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM");
-                        $arFilter = Array("IBLOCK_ID"=>17, "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
-                        $res = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>99), $arSelect);
-                        while($ob = $res->GetNextElement())
-                        {
-                            $arFields = $ob->GetFields();?>
-                            <li class="link-list__item">
-                                <a href="<?= $arParams['SEF_FOLDER'] . $arResult['VARIABLES']['SECTION_ID'] . "/" . $ar_Section['ID'] ?>/?reg=<?=$arFields['ID'];?>"  class="link-list__link"><?=$arFields['NAME']?></a>
-                            </li>
-                        <?} ?>
-                    </ul>
-                </li>
-            <?}else { ?>
-                <li class="link-list__item">
-                    <a href="<?= $arParams['SEF_FOLDER'] . $arResult['VARIABLES']['SECTION_ID'] . "/" . $ar_Section['ID'] ?>/"
-                       class="link-list__link"><?=$ar_Section['NAME'] ?></a>
-                </li>
-                <?
-            }
-            $inFirst++;
-        }
-        if($inFirst == 0){
-            fun404();
-        }
-        ?>
-    </ul>
-</div>
+<?$APPLICATION->IncludeComponent(
+    "bitrix:news.list",
+    "",
+    Array(
+        'AJAX_MODE' => 'Y',
+        "AJAX_OPTION_JUMP" => "N",
+        "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+        "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+        "NEWS_COUNT" => $arParams["NEWS_COUNT"],
+        "SORT_BY1" => $arParams["SORT_BY1"],
+        "SORT_ORDER1" => $arParams["SORT_ORDER1"],
+        "SORT_BY2" => $arParams["SORT_BY2"],
+        "SORT_ORDER2" => $arParams["SORT_ORDER2"],
+        "FIELD_CODE" => $arParams["LIST_FIELD_CODE"],
+        "PROPERTY_CODE" => $arParams["LIST_PROPERTY_CODE"],
+        "DISPLAY_PANEL" => $arParams["DISPLAY_PANEL"],
+        "SET_TITLE" => $arParams["SET_TITLE"],
+        "SET_LAST_MODIFIED" => $arParams["SET_LAST_MODIFIED"],
+        "MESSAGE_404" => $arParams["MESSAGE_404"],
+        "SET_STATUS_404" => $arParams["SET_STATUS_404"],
+        "SHOW_404" => $arParams["SHOW_404"],
+        "FILE_404" => $arParams["FILE_404"],
+        "INCLUDE_IBLOCK_INTO_CHAIN" => $arParams["INCLUDE_IBLOCK_INTO_CHAIN"],
+        "ADD_SECTIONS_CHAIN" => $arParams["ADD_SECTIONS_CHAIN"],
+        "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+        "CACHE_TIME" => $arParams["CACHE_TIME"],
+        "CACHE_FILTER" => $arParams["CACHE_FILTER"],
+        "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+        "DISPLAY_TOP_PAGER" => $arParams["DISPLAY_TOP_PAGER"],
+        "DISPLAY_BOTTOM_PAGER" => $arParams["DISPLAY_BOTTOM_PAGER"],
+        "PAGER_TITLE" => $arParams["PAGER_TITLE"],
+        "PAGER_TEMPLATE" => $arParams["PAGER_TEMPLATE"],
+        "PAGER_SHOW_ALWAYS" => $arParams["PAGER_SHOW_ALWAYS"],
+        "PAGER_DESC_NUMBERING" => $arParams["PAGER_DESC_NUMBERING"],
+        "PAGER_DESC_NUMBERING_CACHE_TIME" => $arParams["PAGER_DESC_NUMBERING_CACHE_TIME"],
+        "PAGER_SHOW_ALL" => $arParams["PAGER_SHOW_ALL"],
+        "PAGER_BASE_LINK_ENABLE" => $arParams["PAGER_BASE_LINK_ENABLE"],
+        "PAGER_BASE_LINK" => $arParams["PAGER_BASE_LINK"],
+        "PAGER_PARAMS_NAME" => $arParams["PAGER_PARAMS_NAME"],
+        "DISPLAY_DATE" => $arParams["DISPLAY_DATE"],
+        "DISPLAY_NAME" => "Y",
+        "DISPLAY_PICTURE" => $arParams["DISPLAY_PICTURE"],
+        "DISPLAY_PREVIEW_TEXT" => $arParams["DISPLAY_PREVIEW_TEXT"],
+        "PREVIEW_TRUNCATE_LEN" => $arParams["PREVIEW_TRUNCATE_LEN"],
+        "ACTIVE_DATE_FORMAT" => $arParams["LIST_ACTIVE_DATE_FORMAT"],
+        "USE_PERMISSIONS" => $arParams["USE_PERMISSIONS"],
+        "GROUP_PERMISSIONS" => $arParams["GROUP_PERMISSIONS"],
+        "FILTER_NAME" => $arParams["FILTER_NAME"],
+        "HIDE_LINK_WHEN_NO_DETAIL" => $arParams["HIDE_LINK_WHEN_NO_DETAIL"],
+        "CHECK_DATES" => $arParams["CHECK_DATES"],
+        "STRICT_SECTION_CHECK" => $arParams["STRICT_SECTION_CHECK"],
 
+        "PARENT_SECTION" => $arResult["VARIABLES"]["SECTION_ID"],
+        "PARENT_SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
+        "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
+        "SECTION_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
+        "IBLOCK_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["news"],
+    ),
+    $component
+);?>

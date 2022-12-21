@@ -1,4 +1,6 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 /** @var array $arParams */
 /** @var array $arResult */
 /** @global CMain $APPLICATION */
@@ -11,54 +13,62 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+$bxajaxid = CAjax::GetComponentID($component->__name, $component->__template->__name, $component->arParams['AJAX_OPTION_ADDITIONAL']);
+
 ?>
-<?if(!empty($arResult["ITEMS"])):?>
-TEST
-<header class="mm_section-header">
-    <div class="mm_tabs _480">
-        <ul id="_tabs" class="mm_tabs-list">
-            <?foreach ($arResult["SECTIONS"] as $key => $sTabs):?>
-                <li class="mm_tabs-list__item<?=$key == 0 ? " _active" : ""?>">
-                    <a data-target="#_<?=$sTabs["CODE"]?>" href="javascript:void(0);" class="mm_tabs-list__link<?=$key == 0 ? " _active" : ""?>"><?=$sTabs["NAME"]?></a>
-                </li>
-            <?endforeach;?>
-        </ul>
-        <div class="mm_tabs-select">
-            <select id="_tabs-select">
-                <?foreach ($arResult["SECTIONS"] as $key => $sTabs):?>
-                    <option value="#_<?=$sTabs["CODE"]?>" <?=$key == 0 ? "selected" : ""?>><?=$sTabs["NAME"]?></option>
-                <?endforeach;?>
-            </select>
+<div class="tabs-results-box cstm_pagen_ajax">
+    <div class="items-inner-wrap">
+        <div class="items-wrap ajax_append_content">
+                <? foreach ($arResult["ITEMS"] as $arItem): ?>
+                    <?
+                    $this->AddEditAction($arItem['ID'], $arItem['EDIT_LINK'],
+                        CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_EDIT"));
+                    $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'],
+                        CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"),
+                        array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
+                    $arItem['FILE_ARRAY'] = CFile::GetFileArray($arItem['PROPERTIES']['FILE']['VALUE']);
+                    $arItem['FILE_ARRAY']['FORMAT_SIZE'] = CFile::FormatSize($arItem['FILE_ARRAY']['FILE_SIZE'], 1);
+                    $arItem['FILE_ARRAY']['FORMAT'] = \Bitrix\Main\IO\Path::getExtension($arItem['FILE_ARRAY']["SRC"]);
+                    ?>
+
+
+                    <div class="item-wrap" id="<?= $this->GetEditAreaId($arItem['ID']); ?>">
+                        <div class="item-tile-doc">
+                            <a href="<?=$arItem['FILE_ARRAY']['SRC']?>" class="tile-link-wrap" download="">
+                                    <span class="tile-photo photo-small">
+                                        <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/file-pdf.svg" alt="">
+                                    </span>
+                                <span class="tile-title-wrap">
+                                        <span class="tile-title title-small"><?=$arItem['NAME']?></span>
+                                        <span class="tile-info"><?= $arItem['FILE_ARRAY']['FORMAT_SIZE'] ?>.<?= $arItem['FILE_ARRAY']['FORMAT'] ?></span>
+                                    </span>
+                            </a>
+                            <div class="tile-info-wrap info-clear">
+                                <a href="<?=$arItem['FILE_ARRAY']['SRC']?>" class="btn-action-icon" download="">
+                                    <span class="button-title"><?=GetMessage('DOWNLOAD_BTN')?></span>
+                                    <span class="button-ico">
+                                            <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/download.svg" alt="">
+                                        </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <? endforeach; ?>
         </div>
     </div>
-</header>
-<div class="mm_section-body">
-    <div class="mm_tabs-container">
-        <?foreach ($arResult["SECTIONS"] as $key => $sTabs):?>
-            <div id="_<?=$sTabs["CODE"]?>" class="mm_tabs-pane<?=$key == 0 ? " _active" : ""?>">
-                <?if(!empty($sTabs["ITEMS"])):?>
-                    <div class="mm_docs_list _important">
-                        <?foreach ($sTabs["ITEMS"] as $sItem):
-                            $this->AddEditAction($sItem['ID'], $sItem['EDIT_LINK'], CIBlock::GetArrayByID($sItem["IBLOCK_ID"], "ELEMENT_EDIT"));
-                            $this->AddDeleteAction($sItem['ID'], $sItem['DELETE_LINK'], CIBlock::GetArrayByID($sItem["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
-                            ?>
-                            <div class="mm_docs_list-item" id="<?=$this->GetEditAreaId($sItem['ID']);?>">
-                               <div class="mm_docs_list-item">
-                                   <a href="<?=$sItem["DETAIL_PAGE_URL"]?>" class="mm_docs_list-item__link"><?=$sItem["NAME"]?></a>
-                                    <?if($arParams["DISPLAY_DATE"]!="N" && $sItem["DISPLAY_ACTIVE_FROM"]):?>
-                                        <div class="mm_docs_list-item__date">
-                                            <span class="mm_value"><?=$sItem["DISPLAY_ACTIVE_FROM"]?></span>
-                                        </div>
-                                   <?endif;?>
-                                </div>
-                            </div>
-                        <?endforeach;?>
-                    </div>
-                <?else:?>
-                    <p><?=GetMessage('NO_ITEMS')?></p>
-                <?endif;?>
-            </div>
-        <?endforeach;?>
-    </div>
 </div>
-<?endif;?>
+
+<?if($arResult["NAV_RESULT"]->nEndPage > 1 && $arResult["NAV_RESULT"]->NavPageNomer<$arResult["NAV_RESULT"]->nEndPage):?>
+    <div class="page-actions-box"  id="btn_<?=$bxajaxid?>">
+        <?= $arResult["NAV_STRING"] ?>
+
+        <div class="more-wrap">
+            <a data-ajax-id="<?=$bxajaxid?>"
+               href="javascript:void(0)"
+               data-show-more-wrap="<?=$arResult["NAV_RESULT"]->NavNum?>"
+               data-next-page="<?=($arResult["NAV_RESULT"]->NavPageNomer + 1)?>"
+               data-max-page="<?=$arResult["NAV_RESULT"]->nEndPage?>" class="btn button-border"><?=GetMessage('LOAD_MORE')?></a>
+        </div>
+    </div>
+<?endif?>
+

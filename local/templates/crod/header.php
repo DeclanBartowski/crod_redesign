@@ -32,11 +32,36 @@ $page = $APPLICATION->GetCurPage();
     </head>
 <? $APPLICATION->ShowPanel(); ?>
 <body>
-<div class="wrap">
+<div class="wrap <?if(NEED_AUTH === true):?> wrap-lk <?endif;?>">
 
 
+    <?if(NEED_AUTH === true):?>
+        <header class="header">
+        <div class="inner-wrap">
+            <div class="logo-wrap">
+                <a href="/" class="logo">
+                    <img src="<?=SITE_TEMPLATE_PATH?>/img/main/logo.svg" alt="">
+                </a>
+            </div>
+            <div class="breadcrumbs-wrap">
+                <? $APPLICATION->IncludeComponent(
+                    "bitrix:breadcrumb",
+                    "main",
+                    [
+                        "PATH" => "",
+                        "SITE_ID" => "s1",
+                        "START_FROM" => "0"
+                    ]
+                ); ?>
+            </div>
+        </div>
+    </header>
+    <div class="page-full">
+    <?endif;?>
 
-<? if (ERROR_404 != 'Y'): ?>
+
+<?
+if (ERROR_404 != 'Y' &&  NEED_AUTH !== true): ?>
     <header class="header">
         <div class="inner-wrap">
             <div class="logo-wrap">
@@ -47,7 +72,7 @@ $page = $APPLICATION->GetCurPage();
             <div class="actions-outer-wrap">
                 <div class="actions-wrap">
                     <div class="action-wrap">
-                        <a href="" class="btn button-second">
+                        <a href="javascript:void(0);" class="btn button-second">
                                 <span class="button-ico">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/view.svg" alt="">
                                 </span>
@@ -57,7 +82,7 @@ $page = $APPLICATION->GetCurPage();
                 </div>
                 <div class="actions-wrap">
                     <div class="action-wrap popup-search-wrap js-popup-wrap">
-                        <a href="" class="btn button-clear btn-popup js-btn-toggle">
+                        <a href="/search/" class="btn button-clear btn-popup js-btn-toggle">
                                 <span class="button-ico">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/search.svg" alt="">
                                 </span>
@@ -65,13 +90,13 @@ $page = $APPLICATION->GetCurPage();
                         </a>
                         <div class="popup-content-block js-popup-block">
                             <a href="" class="btn-popup-close btn-action-ico ico-close js-btn-close"></a>
-                            <form action="/" class="frm-field-search">
-                                <input type="text" class="form-input" placeholder="Поиск">
+                            <form action="/search/" class="frm-field-search">
+                                <input type="text" class="form-input" name="q" placeholder="Поиск">
                             </form>
                         </div>
                     </div>
                     <div class="action-wrap">
-                        <a href="" class="btn button-clear">
+                        <a href="<?if($USER->IsAuthorized()):?>/personal/<?else:?>/login/<?endif;?>" class="btn button-clear">
                                 <span class="button-ico">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/user.svg" alt="">
                                 </span>
@@ -104,7 +129,7 @@ $page = $APPLICATION->GetCurPage();
                     </div>
                     <div class="actions-inner-wrap">
                         <div class="action-wrap">
-                            <a href="" class="btn">
+                            <a href="<?if($USER->IsAuthorized()):?>/personal/<?else:?>/login/<?endif;?>" class="btn">
                                     <span class="button-ico">
                                         <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/user.svg" alt="">
                                     </span>
@@ -112,7 +137,7 @@ $page = $APPLICATION->GetCurPage();
                             </a>
                         </div>
                         <div class="action-wrap">
-                            <a href="" class="btn button-second">
+                            <a href="javascript:void(0)" class="btn button-second">
                                     <span class="button-ico">
                                         <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/view.svg" alt="">
                                     </span>
@@ -122,28 +147,38 @@ $page = $APPLICATION->GetCurPage();
                     </div>
                     <div class="footer-inner-wrap">
                         <div class="footer-phones-wrap">
-                            <div class="footer-title">Горячая линия</div>
-                            <div class="footer-phone">
-                                <a href="tel:84012592953">8 (4012) 59-29-53</a>
-                            </div>
-                            <div class="footer-phone">
-                                <a href="tel:84012592969">8 (4012) 59-29-69</a>
-                            </div>
+                            <?
+                            $APPLICATION->IncludeComponent("bitrix:main.include", "", [
+                                "AREA_FILE_SHOW" => "file",
+                                "PATH" => SITE_TEMPLATE_PATH . "/include/phone.php",
+                                "EDIT_TEMPLATE" => ""
+                            ], false, []);
+                            ?>
                         </div>
                         <div class="footer-soc-wrap">
-                            <a href="" class="btn-action-ico button-soc">
-                                <img src="./img/icons/soc-vk.svg" alt="">
-                            </a>
+                            <?
+                            $APPLICATION->IncludeComponent("bitrix:main.include", "", [
+                                "AREA_FILE_SHOW" => "file",
+                                "PATH" => SITE_TEMPLATE_PATH . "/include/vk.php",
+                                "EDIT_TEMPLATE" => ""
+                            ], false, []);
+                            ?>
                         </div>
                         <div class="footer-info-wrap">
                             <p>
-                                © 2022 Все права принадлежат “ВСОШ”
+                                <?
+                                $APPLICATION->IncludeComponent("bitrix:main.include", "", [
+                                    "AREA_FILE_SHOW" => "file",
+                                    "PATH" => SITE_TEMPLATE_PATH . "/include/politic.php",
+                                    "EDIT_TEMPLATE" => ""
+                                ], false, []);
+                                ?>
                                 <br>
-                                <a href="" class="link-main">Соглашение об обработке персональных данных</a>
+                                <a href="/personal-agree/" class="link-main">Соглашение об обработке персональных данных</a>
                             </p>
-                            <p><a href="">Политика конфиденциальности</a></p>
+                            <p><a href="/politika-konfidentsialnosti/">Политика конфиденциальности</a></p>
                             <p>
-                                <a href="" class="footer-studio">
+                                <a href="https://webmedia39.ru/" target="_blank" class="footer-studio">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/main/logo-studio.svg" alt="">
                                 </a>
                             </p>

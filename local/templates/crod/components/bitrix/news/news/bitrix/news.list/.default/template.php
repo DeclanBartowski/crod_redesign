@@ -14,6 +14,20 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 $bxajaxid = CAjax::GetComponentID($component->__name, $component->__template->__name, $component->arParams['AJAX_OPTION_ADDITIONAL']);
+$colorCount = 0;
+$color = [
+        'color-blue',
+        'color-green',
+        'color-violet',
+        'color-orange',
+        'color-violet-second',
+        'color-violet-third',
+        'color-red',
+        'color-green-second',
+        'color-yellow-second',
+        'color-blue-second',
+        'color-violet-four',
+];
 
 ?>
 <div class="news-box section-inner">
@@ -25,11 +39,12 @@ $bxajaxid = CAjax::GetComponentID($component->__name, $component->__template->__
             $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'],
                 CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"),
                 array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
+            if(empty($color[$colorCount])) $colorCount = 0;
             ?>
             <div class="item-wrap" id="<?= $this->GetEditAreaId($arItem['ID']); ?>">
                 <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>" class="item-tile-new">
                             <span class="tile-head-wrap">
-                                <span class="tile-ico color-blue">
+                                <span class="tile-ico <?=$color[$colorCount]?>">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/calendar.svg" alt="">
                                 </span>
                                 <span class="tile-date"><?=$arItem['DISPLAY_ACTIVE_FROM']?></span>
@@ -46,7 +61,9 @@ $bxajaxid = CAjax::GetComponentID($component->__name, $component->__template->__
                             </span>
                 </a>
             </div>
-        <? endforeach; ?>
+        <?
+            $colorCount++;
+        endforeach; ?>
     </div>
 
     <?if($arResult["NAV_RESULT"]->nEndPage > 1 && $arResult["NAV_RESULT"]->NavPageNomer<$arResult["NAV_RESULT"]->nEndPage):?>

@@ -32,6 +32,7 @@ $this->setFrameMode(true);
         "SECTION_ID" => "",
         "SECTION_URL" => "",
         "SECTION_USER_FIELDS" => array("",""),
-        "TOP_DEPTH" => "2"
+        "TOP_DEPTH" => "2",
+        'CUSTOM_SECTION_SORT' => ['NAME' => 'DESC']
     )
 );?>

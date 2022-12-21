@@ -6,7 +6,11 @@
 if (! defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 } ?>
-<? if (ERROR_404 != 'Y'): ?>
+
+<?if(NEED_AUTH === true):?></div><?endif;?>
+
+
+<? if (ERROR_404 != 'Y' &&  NEED_AUTH !== true): ?>
 
 <? if ($APPLICATION->GetProperty('text_pages') == 'Y'): ?>
     </div>
@@ -40,7 +44,7 @@ if (! defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
             </div>
             <div class="actions-inner-wrap">
                 <div class="action-wrap">
-                    <a href="" class="btn button-clear">
+                    <a href="javascript:void(0)" class="btn button-clear">
                                 <span class="button-ico">
                                     <img src="<?=SITE_TEMPLATE_PATH?>/img/icons/view.svg" alt="">
                                 </span>
@@ -48,9 +52,9 @@ if (! defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
                     </a>
                 </div>
                 <div class="action-wrap">
-                    <a href="" class="btn button-border">
+                    <a href="<?if($USER->IsAuthorized()):?>/personal/<?else:?>/login/<?endif;?>" class="btn button-border">
                                 <span class="button-ico">
-                                    <img src="./img/icons/user.svg" alt="">
+                                    <img src="<?=SITE_TEMPLATE_PATH?>/img/icons/user.svg" alt="">
                                 </span>
                         <span class="button-title">Вход в личный кабинет</span>
                     </a>
@@ -59,34 +63,44 @@ if (! defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
         </div>
         <div class="footer-contacts-wrap">
             <div class="footer-phones-wrap">
-                <div class="footer-title">Горячая линия</div>
-                <div class="footer-phone">
-                    <a href="tel:84012592953">8 (4012) 59-29-53</a>
-                </div>
-                <div class="footer-phone">
-                    <a href="tel:84012592969">8 (4012) 59-29-69</a>
-                </div>
+                <?
+                $APPLICATION->IncludeComponent("bitrix:main.include", "", [
+                    "AREA_FILE_SHOW" => "file",
+                    "PATH" => SITE_TEMPLATE_PATH . "/include/phone.php",
+                    "EDIT_TEMPLATE" => ""
+                ], false, []);
+                ?>
             </div>
             <div class="footer-soc-wrap">
-                <a href="" class="btn-action-ico button-soc">
-                    <img src="<?=SITE_TEMPLATE_PATH?>/img/icons/soc-vk.svg" alt="">
-                </a>
+                <?
+                $APPLICATION->IncludeComponent("bitrix:main.include", "", [
+                    "AREA_FILE_SHOW" => "file",
+                    "PATH" => SITE_TEMPLATE_PATH . "/include/vk.php",
+                    "EDIT_TEMPLATE" => ""
+                ], false, []);
+                ?>
             </div>
         </div>
         <div class="footer-info-wrap">
             <div class="footer-info">
                 <p>
-                    © 2022 Все права принадлежат “ВСОШ”
+                    <?
+                    $APPLICATION->IncludeComponent("bitrix:main.include", "", [
+                        "AREA_FILE_SHOW" => "file",
+                        "PATH" => SITE_TEMPLATE_PATH . "/include/politic.php",
+                        "EDIT_TEMPLATE" => ""
+                    ], false, []);
+                    ?>
                     <br>
-                    <a href="" class="link-main">Соглашение об обработке персональных данных</a>
+                    <a href="/personal-agree/" class="link-main">Соглашение об обработке персональных данных</a>
                 </p>
             </div>
             <div class="footer-info">
-                <p><a href="">Политика конфиденциальности</a></p>
+                <p><a href="/politika-konfidentsialnosti/">Политика конфиденциальности</a></p>
             </div>
             <div class="footer-info">
                 <p>
-                    <a href="" class="footer-studio">
+                    <a href="https://webmedia39.ru/" target="_blank" class="footer-studio">
                         <img src="<?=SITE_TEMPLATE_PATH?>/img/main/logo-studio.svg" alt="">
                     </a>
                 </p>
@@ -119,7 +133,6 @@ if (! defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 </div>
 
 <div style="display: none" id="ajaxHtml">
-
 </div>
 <? endif; ?>
 </body>

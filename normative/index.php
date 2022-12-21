@@ -2,12 +2,12 @@
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Нормативная база");
 ?> <?$APPLICATION->IncludeComponent(
-	"bitrix:news", 
-	"norm-base", 
+	"bitrix:news",
+	"norm-base",
 	array(
 		"IBLOCK_TYPE" => "documents",
 		"IBLOCK_ID" => "27",
-		"NEWS_COUNT" => "20",
+		"NEWS_COUNT" => "9",
 		"USE_SEARCH" => "N",
 		"USE_RSS" => "Y",
 		"NUM_NEWS" => "20",
@@ -42,8 +42,8 @@ $APPLICATION->SetTitle("Нормативная база");
 		"CACHE_GROUPS" => "N",
 		"SET_TITLE" => "Y",
 		"SET_STATUS_404" => "N",
-		"INCLUDE_IBLOCK_INTO_CHAIN" => "Y",
-		"ADD_SECTIONS_CHAIN" => "Y",
+		"INCLUDE_IBLOCK_INTO_CHAIN" => "N",
+		"ADD_SECTIONS_CHAIN" => "N",
 		"USE_PERMISSIONS" => "N",
 		"PREVIEW_TRUNCATE_LEN" => "",
 		"LIST_ACTIVE_DATE_FORMAT" => "j F Y",
@@ -82,7 +82,7 @@ $APPLICATION->SetTitle("Нормативная база");
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"PAGER_TITLE" => "Новости",
 		"PAGER_SHOW_ALWAYS" => "N",
-		"PAGER_TEMPLATE" => "mm_pagination",
+		"PAGER_TEMPLATE" => "round",
 		"PAGER_DESC_NUMBERING" => "N",
 		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
 		"PAGER_SHOW_ALL" => "N",
@@ -126,7 +126,8 @@ $APPLICATION->SetTitle("Нормативная база");
 		"SEF_URL_TEMPLATES" => array(
 			"news" => "",
 			"section" => "#SECTION_ID#/",
-			"detail" => "#SECTION_ID#/#ELEMENT_CODE#/",
+			"type" => "#SECTION_ID#/type/",
+			"detail" => "#SECTION_ID#/type/#REGION_ID#/",
 			"rss" => "rss/",
 			"rss_section" => "#SECTION_CODE#/rss/",
 		)

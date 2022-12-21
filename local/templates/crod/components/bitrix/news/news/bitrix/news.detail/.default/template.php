@@ -31,7 +31,7 @@ $this->setFrameMode(true);
                                     <span class="button-ico">
                                         <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/share.svg" alt="">
                                     </span>
-                        <span class="button-title">Поделиться</span>
+                        <span class="button-title"><?=GetMessage('SHARE_TITLE')?></span>
                     </a>
                     <div class="popup-content-block js-popup-block">
                         <ul class="menu">
@@ -40,7 +40,7 @@ $this->setFrameMode(true);
                                                 <span class="button-ico btn button-border">
                                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/copy.svg" alt="">
                                                 </span>
-                                    <span class="button-title">Копировать ссылку</span>
+                                    <span class="button-title"><?=GetMessage('COPY_LINK')?></span>
                                 </a>
                             </li>
                             <li>
@@ -48,7 +48,7 @@ $this->setFrameMode(true);
                                                 <span class="button-ico btn button-border">
                                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/ms-wa.svg" alt="">
                                                 </span>
-                                    <span class="button-title">WhatsApp</span>
+                                    <span class="button-title"><?=GetMessage('WA_SHARE')?></span>
                                 </a>
                             </li>
                             <li>
@@ -56,7 +56,7 @@ $this->setFrameMode(true);
                                                 <span class="button-ico btn button-border">
                                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/ms-tg.svg" alt="">
                                                 </span>
-                                    <span class="button-title">Telegram</span>
+                                    <span class="button-title"><?=GetMessage('TG_SHARE')?></span>
                                 </a>
                             </li>
                         </ul>
@@ -74,112 +74,45 @@ $this->setFrameMode(true);
 
     <?= $arResult['DETAIL_TEXT'] ?>
 
-    <!--gallery-slider-box-->
-    <div class="gallery-slider-box">
-        <div class="slider-wrap">
-            <div class="slider">
-                <!--sl-wrap-->
-                <div class="sl-wrap">
-                    <div class="elm-photo photo-cover">
-                        <img src="<?= SITE_TEMPLATE_PATH ?>/img/photo.jpg" alt="">
-                    </div>
-                    <div class="sl-title">Название фото</div>
+    <? if (!empty($arResult["PROPERTIES"]['SLIDER']['VALUE'])): ?>
+        <div class="gallery-slider-box">
+            <div class="slider-wrap">
+                <div class="slider">
+                    <? foreach ($arResult["PROPERTIES"]['SLIDER']['VALUE'] as $keySlider => $valueSlider): ?>
+                        <div class="sl-wrap">
+                            <div class="elm-photo photo-cover">
+                                <img src="<?= CFile::GetPath($valueSlider) ?>" alt="">
+                            </div>
+                            <? if (!empty($arResult["PROPERTIES"]['SLIDER']['DESCRIPTION'][$keySlider])): ?>
+                                <div class="sl-title"><?= $arResult["PROPERTIES"]['SLIDER']['DESCRIPTION'][$keySlider] ?></div>
+                            <? endif; ?>
+                        </div>
+                    <? endforeach; ?>
                 </div>
-                <!--/sl-wrap-->
-                <!--sl-wrap-->
-                <div class="sl-wrap">
-                    <div class="elm-photo photo-cover">
-                        <img src="<?= SITE_TEMPLATE_PATH ?>/img/photo.jpg" alt="">
-                    </div>
-                    <div class="sl-title">Название фото</div>
-                </div>
-                <!--/sl-wrap-->
-                <!--sl-wrap-->
-                <div class="sl-wrap">
-                    <div class="elm-photo photo-cover">
-                        <img src="<?= SITE_TEMPLATE_PATH ?>/img/photo.jpg" alt="">
-                    </div>
-                    <div class="sl-title">Название фото</div>
-                </div>
-                <!--/sl-wrap-->
-                <!--sl-wrap-->
-                <div class="sl-wrap">
-                    <div class="elm-photo photo-cover">
-                        <img src="<?= SITE_TEMPLATE_PATH ?>/img/photo.jpg" alt="">
-                    </div>
-                    <div class="sl-title">Название фото</div>
-                </div>
-                <!--/sl-wrap-->
-                <!--sl-wrap-->
-                <div class="sl-wrap">
-                    <div class="elm-photo photo-cover">
-                        <img src="<?= SITE_TEMPLATE_PATH ?>/img/photo.jpg" alt="">
-                    </div>
-                    <div class="sl-title">Название фото</div>
-                </div>
-                <!--/sl-wrap-->
-                <!--sl-wrap-->
-                <div class="sl-wrap">
-                    <div class="elm-photo photo-cover">
-                        <img src="<?= SITE_TEMPLATE_PATH ?>/img/photo.jpg" alt="">
-                    </div>
-                    <div class="sl-title">Название фото</div>
-                </div>
-                <!--/sl-wrap-->
             </div>
         </div>
-    </div>
-    <!--/gallery-slider-box-->
+    <? endif; ?>
 
-    <h2 class="h2-title">Заголовок</h2>
-    <div class="text-columns-wrap">
-        <div class="text-column">
-            <ul>
-                <li>Задача организации, в особенности же постоянный количественный рост и сфера нашей активности играет
-                    важную роль в формировании позиций, занимаемых участниками в отношении поставленных задач. Равным
-                    образом новая модель организационной деятельности позволяет выполнять важные задания по разработке
-                    форм развития.
-                </li>
-                <li>С другой стороны консультация с широким активом позволяет выполнять важные задания по разработке
-                    позиций, занимаемых участниками в отношении поставленных задач.
-                </li>
-                <li>Равным образом постоянный количественный рост и сфера нашей активности позволяет выполнять важные
-                    задания по разработке направлений прогрессивного развития. Повседневная практика показывает, что
-                    начало повседневной работы по формированию позиции в значительной степени обуславливает создание
-                    новых предложений.
-                </li>
-            </ul>
+
+    <? if (!empty($arResult['PROPERTIES']['TITLE']['VALUE'])): ?>
+        <h2 class="h2-title"><?= $arResult['PROPERTIES']['TITLE']['VALUE'] ?></h2>
+    <? endif; ?>
+    <? if (!empty($arResult['PROPERTIES']['FIRST_COLUMN']['~VALUE']["TEXT"]) || !empty($arResult['PROPERTIES']['SECOND_COLUMN']['~VALUE']["TEXT"])): ?>
+        <div class="text-columns-wrap">
+            <div class="text-column">
+                <?= $arResult['PROPERTIES']['FIRST_COLUMN']['~VALUE']["TEXT"] ?>
+            </div>
+            <div class="text-column">
+                <?= $arResult['PROPERTIES']['SECOND_COLUMN']['~VALUE']["TEXT"] ?>
+            </div>
         </div>
-        <div class="text-column">
-            <ol>
-                <li>Задача организации, в особенности же постоянный количественный рост и сфера нашей активности играет
-                    важную роль в формировании позиций, занимаемых участниками в отношении поставленных задач. Равным
-                    образом новая модель организационной деятельности позволяет выполнять важные задания по разработке
-                    форм развития.
-                </li>
-                <li>С другой стороны консультация с широким активом позволяет выполнять важные задания по разработке
-                    позиций, занимаемых участниками в отношении поставленных задач.
-                </li>
-                <li>Равным образом постоянный количественный рост и сфера нашей активности позволяет выполнять важные
-                    задания по разработке направлений прогрессивного развития. Повседневная практика показывает, что
-                    начало повседневной работы по формированию позиции в значительной степени обуславливает создание
-                    новых предложений.
-                </li>
-            </ol>
-        </div>
-    </div>
+    <? endif; ?>
 
-    <blockquote class="bq-text">
-        <p>Задача организации, в особенности же постоянный количественный рост и сфера нашей активности играет важную
-            роль в формировании позиций, занимаемых участниками в отношении поставленных задач. Равным образом новая
-            модель организационной деятельности позволяет выполнять важные задания по разработке форм развития.</p>
-        <p>С другой стороны консультация с широким активом позволяет выполнять важные задания по разработке позиций,
-            занимаемых участниками в отношении поставленных задач. Равным образом постоянный количественный рост и сфера
-            нашей активности позволяет выполнять важные задания по разработке направлений прогрессивного развития.
-            Повседневная практика показывает, что начало повседневной работы по формированию позиции в значительной
-            степени обуславливает создание новых предложений.</p>
-    </blockquote>
-
+    <? if (!empty($arResult['PROPERTIES']['QUOTE']['~VALUE']["TEXT"])): ?>
+        <blockquote class="bq-text">
+            <?= $arResult['PROPERTIES']['QUOTE']['~VALUE']["TEXT"] ?>
+        </blockquote>
+    <? endif; ?>
 
     <div class="footer-outer-wrap">
         <div class="action-wrap">
@@ -194,5 +127,4 @@ $this->setFrameMode(true);
             <div class="info-wrap"><b><?= GetMessage('AUTHOR_TITLE') ?></b> <?= $arResult['AUTHOR'] ?></div>
         <? endif; ?>
     </div>
-
 </div>

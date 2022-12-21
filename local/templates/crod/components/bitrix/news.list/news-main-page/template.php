@@ -13,6 +13,20 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+$colorCount = 0;
+$color = [
+    'color-blue',
+    'color-green',
+    'color-violet',
+    'color-orange',
+    'color-violet-second',
+    'color-violet-third',
+    'color-red',
+    'color-green-second',
+    'color-yellow-second',
+    'color-blue-second',
+    'color-violet-four',
+];
 ?>
 <div class="news-box section-main">
     <div class="title-inner-wrap">
@@ -26,12 +40,14 @@ $this->setFrameMode(true);
             $this->AddDeleteAction($arItem['ID'], $arItem['DELETE_LINK'],
                 CIBlock::GetArrayByID($arItem["IBLOCK_ID"], "ELEMENT_DELETE"),
                 array("CONFIRM" => GetMessage('CT_BNL_ELEMENT_DELETE_CONFIRM')));
+            if(empty($color[$colorCount])) $colorCount = 0;
+
             ?>
 
             <div class="item-wrap" id="<?= $this->GetEditAreaId($arItem['ID']); ?>">
                 <a href="<?= $arItem['DETAIL_PAGE_URL'] ?>" class="item-tile-new">
                             <span class="tile-head-wrap">
-                                <span class="tile-ico color-black">
+                                <span class="tile-ico <?=$color[$colorCount]?>">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/calendar.svg" alt="">
                                 </span>
                                 <span class="tile-date"><?= $arItem['DISPLAY_ACTIVE_FROM'] ?></span>
@@ -50,7 +66,9 @@ $this->setFrameMode(true);
                 </a>
             </div>
 
-        <? endforeach; ?>
+        <?
+            $colorCount++;
+        endforeach; ?>
     </div>
     <div class="action-inner-wrap">
         <a href="<?= $arResult['LIST_PAGE_URL'] ?>" class="btn button-border">

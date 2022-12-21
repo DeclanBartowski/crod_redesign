@@ -11,151 +11,79 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-$APPLICATION->SetPageProperty("NOT_SHOW_NAV_CHAIN", "N");
-
-$res_step = CIBlockSection::GetByID($arResult['VARIABLES']['ELEMENT_CODE']);
-if($ar_st = $res_step->GetNext()){
-    $bread = $ar_st['NAME'];
-}else{
-    fun404();
+\Bitrix\Main\Loader::includeModule('iblock');
+$region = \Bitrix\Iblock\ElementTable::getById($arResult["VARIABLES"]["REGION_ID"])->fetch();
+if(!empty($region))
+{
+    $APPLICATION->SetTitle($region['NAME']);
+    $APPLICATION->SetPageProperty('title', $region['NAME']);
+    $APPLICATION->AddChainItem($region['NAME'], 'javascript:void(0)');
 }
-
-$res = CIBlockSection::GetByID($arResult['VARIABLES']['SECTION_ID']);
-if($ar_res = $res->GetNext()){
-    $APPLICATION->AddChainItem(($ar_res['NAME']-1)."-".$ar_res['NAME'], $arParams['SEF_FOLDER'].$arResult['VARIABLES']['SECTION_ID']."/");
-    $bread .= " за ".($ar_res['NAME']-1)."-".$ar_res['NAME']." год";
-}else{
-    fun404();
-}
-
-if($_REQUEST['reg']){
-    $reg = CIBlockElement::GetByID($_REQUEST["reg"]);
-    if($ar_res = $reg->GetNext())
-        $bread .= " - ".$ar_res['NAME'];
-    else fun404();
-}
-$inFirst = 0;
-$APPLICATION->AddChainItem($bread);
-$APPLICATION->SetTitle($bread);
+$GLOBALS['filterCode']['PROPERTY_REG'] = $arResult["VARIABLES"]["REGION_ID"];
 ?>
+<?$APPLICATION->IncludeComponent(
+    "bitrix:news.list",
+    "",
+    Array(
+        'AJAX_MODE' => 'Y',
+        "AJAX_OPTION_JUMP" => "N",
+        "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+        "IBLOCK_ID" => $arParams["IBLOCK_ID"],
+        "NEWS_COUNT" => $arParams["NEWS_COUNT"],
+        "SORT_BY1" => $arParams["SORT_BY1"],
+        "SORT_ORDER1" => $arParams["SORT_ORDER1"],
+        "SORT_BY2" => $arParams["SORT_BY2"],
+        "SORT_ORDER2" => $arParams["SORT_ORDER2"],
+        "FIELD_CODE" => $arParams["LIST_FIELD_CODE"],
+        "PROPERTY_CODE" => $arParams["LIST_PROPERTY_CODE"],
+        "DISPLAY_PANEL" => $arParams["DISPLAY_PANEL"],
+        "SET_TITLE" => $arParams["SET_TITLE"],
+        "SET_LAST_MODIFIED" => $arParams["SET_LAST_MODIFIED"],
+        "MESSAGE_404" => $arParams["MESSAGE_404"],
+        "SET_STATUS_404" => $arParams["SET_STATUS_404"],
+        "SHOW_404" => $arParams["SHOW_404"],
+        "FILE_404" => $arParams["FILE_404"],
+        "INCLUDE_IBLOCK_INTO_CHAIN" => $arParams["INCLUDE_IBLOCK_INTO_CHAIN"],
+        "ADD_SECTIONS_CHAIN" => $arParams["ADD_SECTIONS_CHAIN"],
+        "CACHE_TYPE" => $arParams["CACHE_TYPE"],
+        "CACHE_TIME" => $arParams["CACHE_TIME"],
+        "CACHE_FILTER" => $arParams["CACHE_FILTER"],
+        "CACHE_GROUPS" => $arParams["CACHE_GROUPS"],
+        "DISPLAY_TOP_PAGER" => $arParams["DISPLAY_TOP_PAGER"],
+        "DISPLAY_BOTTOM_PAGER" => $arParams["DISPLAY_BOTTOM_PAGER"],
+        "PAGER_TITLE" => $arParams["PAGER_TITLE"],
+        "PAGER_TEMPLATE" => $arParams["PAGER_TEMPLATE"],
+        "PAGER_SHOW_ALWAYS" => $arParams["PAGER_SHOW_ALWAYS"],
+        "PAGER_DESC_NUMBERING" => $arParams["PAGER_DESC_NUMBERING"],
+        "PAGER_DESC_NUMBERING_CACHE_TIME" => $arParams["PAGER_DESC_NUMBERING_CACHE_TIME"],
+        "PAGER_SHOW_ALL" => $arParams["PAGER_SHOW_ALL"],
+        "PAGER_BASE_LINK_ENABLE" => $arParams["PAGER_BASE_LINK_ENABLE"],
+        "PAGER_BASE_LINK" => $arParams["PAGER_BASE_LINK"],
+        "PAGER_PARAMS_NAME" => $arParams["PAGER_PARAMS_NAME"],
+        "DISPLAY_DATE" => $arParams["DISPLAY_DATE"],
+        "DISPLAY_NAME" => "Y",
+        "DISPLAY_PICTURE" => $arParams["DISPLAY_PICTURE"],
+        "DISPLAY_PREVIEW_TEXT" => $arParams["DISPLAY_PREVIEW_TEXT"],
+        "PREVIEW_TRUNCATE_LEN" => $arParams["PREVIEW_TRUNCATE_LEN"],
+        "ACTIVE_DATE_FORMAT" => $arParams["LIST_ACTIVE_DATE_FORMAT"],
+        "USE_PERMISSIONS" => $arParams["USE_PERMISSIONS"],
+        "GROUP_PERMISSIONS" => $arParams["GROUP_PERMISSIONS"],
+        "FILTER_NAME" => 'filterCode',
+        "HIDE_LINK_WHEN_NO_DETAIL" => $arParams["HIDE_LINK_WHEN_NO_DETAIL"],
+        "CHECK_DATES" => $arParams["CHECK_DATES"],
+        "STRICT_SECTION_CHECK" => $arParams["STRICT_SECTION_CHECK"],
 
-<div class="norm-baze__wrapper" id="wrp">
-    <?
-    if ($_REQUEST["AJAX"] == "Y") $APPLICATION->RestartBuffer();
-    if($_REQUEST['NEWS_COUNT']) $num_page = $_REQUEST['NEWS_COUNT'];
-    else $num_page = 20;
-    $arSelect = Array("ID", "IBLOCK_ID", "NAME", "PREVIEW_TEXT", "DATE_ACTIVE_FROM","PROPERTY_*");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-    $arFilter = Array(
-            "IBLOCK_ID"=>$arParams['IBLOCK_ID'],
-            "SECTION_ID" => $arResult['VARIABLES']['ELEMENT_CODE'],
-            "PROPERTY_REG" => $_REQUEST['reg'],
-            "ACTIVE_DATE"=>"Y", "ACTIVE"=>"Y");
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>$num_page), $arSelect);
-    $NAV_STRING = $res->GetPageNavStringEx($navComponentObject, 'Заголовок', 'mm_pagination_new', 'Y');
-    while($ob = $res->GetNextElement()){
-        $arFields = $ob->GetFields();
-        $arProps = $ob->GetProperties();
-        $file = CFile::GetFileArray($arProps['FILE']['VALUE']);
-        $FILE_SIZE = CFile::FormatSize(
-            $file['FILE_SIZE'],
-            $precision = 1
-        );
-        $basename = pathinfo($file['FILE_NAME']);
+        "PARENT_SECTION" => $arResult["VARIABLES"]["SECTION_ID"],
+        "PARENT_SECTION_CODE" => $arResult["VARIABLES"]["SECTION_CODE"],
+        "DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
+        "SECTION_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
+        "IBLOCK_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["news"],
+    ),
+    $component
+);
 
-        switch (mb_strtolower($basename['extension'])){
-            case "doc" : $class_doc = "_doc"; break;
-            case "DOC" : $class_doc = "_doc"; break;
-            case "docx" : $class_doc = "_doc"; break;
-            case "DOCX" : $class_doc = "_doc"; break;
-            case "pdf" : $class_doc = "_pdf"; break;
-            case "PDF" : $class_doc = "_pdf"; break;
-            case "rar" : $class_doc = "_zip"; break;
-            case "RAR" : $class_doc = "_zip"; break;
-            case "zip" : $class_doc = "_zip"; break;
-            case "ZIP" : $class_doc = "_zip"; break;
-            case "xls" : $class_doc = "_xls"; break;
-            case "XLS" : $class_doc = "_xls"; break;
-            case "xlsx" : $class_doc = "_xls"; break;
-            case "XLSX" : $class_doc = "_xls"; break;
-            default :  $class_doc = "_doc";
-        }
-
-        $res_doc = CIBlockElement::GetByID($arProps['TYPE_DOC']['VALUE']);
-
-        ?>
-
-            <a href="<?=$file['SRC']?>" class="mm_doc-link <?=$class_doc;?>" title="(<?=mb_strtolower($basename['extension']);?>, <?=$FILE_SIZE?>)">
-                <p class="mm_doc-info">
-                    <span class="value"><?=!empty($arFields['PREVIEW_TEXT'])?$arFields['PREVIEW_TEXT']:$arFields['NAME'];?></span>
-
-                    <?
-                    if($ar_res_doc = $res_doc->GetNext())
-                        echo " <span class='info-type'>{$ar_res_doc['NAME']}</span>";
-                    ?>
-                    <span class="mm_doc-type-size"><?=mb_strtolower($basename['extension']);?>, <?=$FILE_SIZE?></span>
-                </p>
-            </a>
-    <?
-        $inFirst++;
-    }
-    if($inFirst == 0){
-        echo "<h3>В данном разделе ничего нет</h3>";
-    }
-    ?>
-    <?=$NAV_STRING;?>
-    <script>var page_num = "<?=$res->NavPageNomer?>";</script>
-
-</div>
-
-
-<script>
-    var page = "<?=$APPLICATION->GetCurPage(false); ?>";
-    var news_count = <?=$num_page?>;
-    var news_count_option = <?=$num_page?>;
-    var dir_section = page;
-</script>
-
-<script>
-    function mm_createElement(t) {
-        return;
-    }
-
-    $(document).ready(function() {
-
-        $(document).on('change', '#_select', function (e) {
-            var select_val = $(this).val();
-            ajax_section(news_count,select_val);
-        });
-
-        $(document).on('click', '#mm_button_add', function (e) {
-            news_count = news_count + news_count_option;
-            ajax_section(news_count,page_num);
-        });
-
-        function ajax_section(news_count,page_num) {
-            $.ajax({
-                url: page,
-                method: "post",
-                data: {
-                    AJAX: "Y",
-                    NEWS_COUNT: news_count,
-                    PAGEN_1: page_num,
-                    reg: "<?if($_REQUEST['reg']) echo $_REQUEST['reg'];?>"
-                    },
-                    beforeSend: function () {
-                        $('#wrp').fadeOut(200);
-                    },
-                    error: function () {
-                        alert("Ошибка запроса");
-                    },
-                    success: function (result) {
-                        $('#wrp').html(result).fadeIn(200);
-                        $(".mm_select select").styler();
-                        window.history.pushState(null, null, dir_section + "?PAGEN_1=" + page_num + "<?if($_REQUEST['reg']) echo "&reg=".$_REQUEST['reg'];?>");
-                    }
-                })
-            }
-        });
-    </script>
-    </div>
-    <?if ($_REQUEST["AJAX"] == "Y") die;?>
+if(!empty($region))
+{
+    $APPLICATION->SetTitle($region['NAME']);
+}
+?>
