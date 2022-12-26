@@ -1,6 +1,6 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetTitle("Жюри");
+$APPLICATION->SetTitle("Состав региональной-предметной комиссии");
 CModule::IncludeModule('iblock');
 $request = \Bitrix\Main\Context::getCurrent()->getRequest()->getQuery("id_sub");
 $GLOBALS['filterName']['PROPERTY_SUB'] = false;

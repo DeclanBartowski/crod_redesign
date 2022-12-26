@@ -33,7 +33,7 @@ $this->setFrameMode(true);
 <? foreach ($arResult['COMBINE']['MAIN'] as $key => $value): ?>
 
     <div class="tabs-results-box tab-light js-tab-block" data-tab="documents_<?= $key ?>">
-        <div class="items-wrap items-columns">
+        <div class="items-wrap">
             <?
             $id = end($arResult['COMBINE']['SUB'][$value['ID']])['ID'];
             foreach ($arResult['COMBINE']['SUB'][$value['ID']] as $item): ?>
@@ -41,7 +41,7 @@ $this->setFrameMode(true);
                 $url = '/normative/';
                 $url .= ($id == $item['ID']) ? $value['ID'] . '/type/' : $item['ID'] . '/';
                 ?>
-                <div class="item-wrap">
+                <div class="item-wrap wrap-full">
                     <a href="<?= $url ?>"
                        class="item-tile-folder <? if ($item['ELEMENT_CNT'] < 1): ?>tile-disabled<? endif; ?>">
                             <span class="tile-ico">

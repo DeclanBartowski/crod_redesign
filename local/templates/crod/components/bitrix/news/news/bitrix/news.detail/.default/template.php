@@ -34,9 +34,9 @@ $this->setFrameMode(true);
                         <span class="button-title"><?=GetMessage('SHARE_TITLE')?></span>
                     </a>
                     <div class="popup-content-block js-popup-block">
-                        <ul class="menu">
+                        <ul class="a2a_kit menu">
                             <li>
-                                <a href="" class="btn-action-icon">
+                                <a href="javascript:void()" id="copyLink" class="btn-action-icon">
                                                 <span class="button-ico btn button-border">
                                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/copy.svg" alt="">
                                                 </span>
@@ -44,7 +44,7 @@ $this->setFrameMode(true);
                                 </a>
                             </li>
                             <li>
-                                <a href="" class="btn-action-icon">
+                                <a href="" class="btn-action-icon a2a_button_whatsapp">
                                                 <span class="button-ico btn button-border">
                                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/ms-wa.svg" alt="">
                                                 </span>
@@ -52,7 +52,7 @@ $this->setFrameMode(true);
                                 </a>
                             </li>
                             <li>
-                                <a href="" class="btn-action-icon">
+                                <a href="" class="btn-action-icon a2a_button_telegram">
                                                 <span class="button-ico btn button-border">
                                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/ms-tg.svg" alt="">
                                                 </span>
@@ -60,6 +60,7 @@ $this->setFrameMode(true);
                                 </a>
                             </li>
                         </ul>
+                            <script async src="https://static.addtoany.com/menu/page.js"></script>
                     </div>
                 </div>
             </div>

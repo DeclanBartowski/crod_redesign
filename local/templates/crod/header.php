@@ -6,6 +6,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
     die();
 }
 $page = $APPLICATION->GetCurPage();
+$pageVisible = ($_SESSION["special_version"] == 'Y') ? $APPLICATION->GetCurPageParam("special_version=N", array("special_version")) :  $APPLICATION->GetCurPageParam("special_version=Y", array("special_version"));
 ?>
     <!DOCTYPE html>
 <html lang="<?= LANGUAGE_ID ?>">
@@ -19,11 +20,13 @@ $page = $APPLICATION->GetCurPage();
         Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/reset.css");
         Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/swipebox.min.css");
         Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/slick.css");
+        Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/select2.min.css");
         Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . "/css/style.min.css");
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . "/js/jquery.min.js");
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . "/js/slick.min.js");
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . "/js/jquery.swipebox.min.js");
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . "/js/jquery.maskedinput.min.js");
+        Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . "/js/select2.min.js");
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . "/js/scripts.js");
         Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . "/js/custom.js");
         ?>
@@ -34,7 +37,19 @@ $page = $APPLICATION->GetCurPage();
 <body>
 <div class="wrap <?if(NEED_AUTH === true):?> wrap-lk <?endif;?>">
 
+    <?
+    if($_GET['special_version'] == 'Y') {
+        $_SESSION["special_version"] = "Y";
+    }
 
+    if($_GET['special_version'] == 'N') {
+        $_SESSION["special_version"] = "N";
+    }
+    $APPLICATION->IncludeComponent(
+        "vision:vision.special",
+        "",
+        Array()
+    );?>
     <?if(NEED_AUTH === true):?>
         <header class="header">
         <div class="inner-wrap">
@@ -72,7 +87,7 @@ if (ERROR_404 != 'Y' &&  NEED_AUTH !== true): ?>
             <div class="actions-outer-wrap">
                 <div class="actions-wrap">
                     <div class="action-wrap">
-                        <a href="javascript:void(0);" class="btn button-second">
+                        <a href="<?=$pageVisible?>" onclick='Cookies.set("bvi-panel-active",true,{path:"/",expires:1});' class="btn button-second">
                                 <span class="button-ico">
                                     <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/view.svg" alt="">
                                 </span>
@@ -137,7 +152,7 @@ if (ERROR_404 != 'Y' &&  NEED_AUTH !== true): ?>
                             </a>
                         </div>
                         <div class="action-wrap">
-                            <a href="javascript:void(0)" class="btn button-second">
+                            <a href="<?=$pageVisible?>" class="btn button-second" onclick='Cookies.set("bvi-panel-active",true,{path:"/",expires:1});'>
                                     <span class="button-ico">
                                         <img src="<?= SITE_TEMPLATE_PATH ?>/img/icons/view.svg" alt="">
                                     </span>

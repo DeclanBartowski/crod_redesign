@@ -1,34 +1,70 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("");
 CModule::IncludeModule("iblock");
-$APPLICATION->AddChainItem("Предметы", "/subjects/");
-
-//receives Fristname Secondname Patronymic and returns Firstname S.P.
-function truncateName($fullName = ''){
-    if(empty($fullName))return '';
-    $arName = explode(' ', $fullName);
-    $shortName = $arName[0] . ' ' . (!empty($arName[1])?mb_substr($arName[1],0,1) . '. ':'') . (!empty($arName[2])?mb_substr($arName[2],0,1) . '.':'');
-    return $shortName;
-}
-?><h2>Результаты муниципального этапа 2022-2023</h2>
- Общие результаты муниципального этапа по&nbsp;<b>географии </b>доступны&nbsp;<a href="/rezultaty-2023/География.Итог%20на%20РЭ%20(1)_МЭ_2023.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>истории </b>доступны&nbsp;<a href="/rezultaty-2023/История.Итоги%20на%20МЭ_2023.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>английскому языку&nbsp;</b>доступны&nbsp;<a href="/rezultaty-2023/Английский%20язык.Итог%20на%20МЭ_2023.xls">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>французскому языку</b>&nbsp;доступны&nbsp;<a href="/rezultaty-2023/Французский%20язык.Итог%20на%20МЭ_2023.xls">по ссылке.</a><br>
- Общие результаты муниципального этапа по <b>русскому языку</b> доступны <a href="/rezultaty-2023/Русский%20язык.Итог%20на%20МЭ_2023.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по <b>искусству (МХК)</b> доступны&nbsp;<a href="/rezultaty-2023/МХК.Итог%20на%20РЭ%20(1).xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>немецкому языку</b>&nbsp;доступны&nbsp;<a href="/rezultaty-2023/Немецкий%20язык.Итоги%20на%20РЭ%20(1).xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>ОБЖ</b> доступны&nbsp;<a href="/rezultaty-2023/ОБЖ.Итог%20на%20МЭ_2023.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>обществознанию</b> доступны&nbsp;<a href="/rezultaty-2023/Обществознание.Итог%20на%20РЭ.xls">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>химии&nbsp;</b>доступны&nbsp;<a href="/rezultaty-2023/Химия.Итог%20на%20РЭ%20(1).xls">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>экологии</b> доступны&nbsp;<a href="/rezultaty-2023/Экология.Итоги%20на%20РЭ%20(1).xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>экономике</b> доступны&nbsp;<a href="/rezultaty-2023/Экономика.Итог%20на%20РЭ%20(1).xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>праву</b> доступны&nbsp;<a href="/rezultaty-2023/Право.Итог%20на%20РЭ.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>испанскому языку</b>&nbsp;доступны&nbsp;<a href="/rezultaty-2023/Испанский.Итог%20на%20РЭ.xls">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>итальянскому языку</b>&nbsp;доступны&nbsp;<a href="/rezultaty-2023/Итальянский.Итог%20на%20РЭ.xls">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>китайскому языку</b>&nbsp;доступны <a href="/rezultaty-2023/Китайский%20язык.Итог%20на%20РЭ.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>математике</b> доступны <a href="/rezultaty-2023/Математика.Итог%20на%20РЭ.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>технологии</b> доступны <a href="/rezultaty-2023/ТЕХНОЛОГИЯ%20общая%20таблица.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по<b>&nbsp;физической культуре</b> доступны <a href="/rezultaty-2023/Физ-ра.%20Итог%20на%20РЭ.xlsx">по ссылке.</a><br>
- Общие результаты муниципального этапа по&nbsp;<b>физике</b> доступны&nbsp;<a href="/normative/Физика.Итог%20на%20РЭ.xlsx">по ссылке.</a><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+$predmet = $_REQUEST["id_sub"];
+$section = $_REQUEST["id_step"];
+if(empty($predmet) &&empty($section)) LocalRedirect('/404.php');
+$GLOBALS['resultFile']['!PROPERTY_RESULT_FILE'] = false;
+$GLOBALS['resultFile']['PROPERTY_RESULT_SUB'] = $predmet;
+$GLOBALS['resultFile']['PROPERTY_RESULT_SECTION'] = $section;
+?>
+<?$APPLICATION->IncludeComponent(
+    "bitrix:news.list",
+    "results",
+    Array(
+        'SUBJECT'=> $predmet,
+        'SECTION'=> $section,
+        "ACTIVE_DATE_FORMAT" => "d.m.Y",
+        "ADD_SECTIONS_CHAIN" => "N",
+        "AJAX_MODE" => "Y",
+        "AJAX_OPTION_ADDITIONAL" => "",
+        "AJAX_OPTION_HISTORY" => "N",
+        "AJAX_OPTION_JUMP" => "N",
+        "AJAX_OPTION_STYLE" => "Y",
+        "CACHE_FILTER" => "N",
+        "CACHE_GROUPS" => "Y",
+        "CACHE_TIME" => "36000000",
+        "CACHE_TYPE" => "A",
+        "CHECK_DATES" => "Y",
+        "DETAIL_URL" => "",
+        "DISPLAY_BOTTOM_PAGER" => "Y",
+        "DISPLAY_DATE" => "N",
+        "DISPLAY_NAME" => "N",
+        "DISPLAY_PICTURE" => "N",
+        "DISPLAY_PREVIEW_TEXT" => "N",
+        "DISPLAY_TOP_PAGER" => "N",
+        "FIELD_CODE" => array("",""),
+        "FILTER_NAME" => "resultFile",
+        "HIDE_LINK_WHEN_NO_DETAIL" => "N",
+        "IBLOCK_ID" => "30",
+        "IBLOCK_TYPE" => "documents",
+        "INCLUDE_IBLOCK_INTO_CHAIN" => "N",
+        "INCLUDE_SUBSECTIONS" => "N",
+        "MESSAGE_404" => "",
+        "NEWS_COUNT" => "6",
+        "PAGER_BASE_LINK_ENABLE" => "N",
+        "PAGER_DESC_NUMBERING" => "N",
+        "PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
+        "PAGER_SHOW_ALL" => "N",
+        "PAGER_SHOW_ALWAYS" => "N",
+        "PAGER_TEMPLATE" => "round",
+        "PAGER_TITLE" => "Новости",
+        "PARENT_SECTION" => "",
+        "PARENT_SECTION_CODE" => "",
+        "PREVIEW_TRUNCATE_LEN" => "",
+        "PROPERTY_CODE" => array("","RESULT_FILE",""),
+        "SET_BROWSER_TITLE" => "N",
+        "SET_LAST_MODIFIED" => "N",
+        "SET_META_DESCRIPTION" => "N",
+        "SET_META_KEYWORDS" => "N",
+        "SET_STATUS_404" => "N",
+        "SET_TITLE" => "N",
+        "SHOW_404" => "N",
+        "SORT_BY1" => "ACTIVE_FROM",
+        "SORT_BY2" => "SORT",
+        "SORT_ORDER1" => "DESC",
+        "SORT_ORDER2" => "ASC",
+        "STRICT_SECTION_CHECK" => "N"
+    )
+);?>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

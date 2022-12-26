@@ -65,3 +65,9 @@ $this->setFrameMode(true);
 	),
 	$component
 );?>
+<style>
+    #linkPage {
+        opacity: 0;
+    }
+</style>
+<input type="text" id="linkPage" value="<?=$_SERVER["HTTP_X_FORWARDED_PROTO"]  . '://' .  $_SERVER["HTTP_HOST"] .$APPLICATION->GetCurPage(false)?>"  >
