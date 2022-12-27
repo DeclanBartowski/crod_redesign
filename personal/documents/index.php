@@ -1,6 +1,7 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetTitle("Документы");
+$APPLICATION->AddChainItem('Добавить документ', 'javascript:void(0);');
+$APPLICATION->SetTitle("Добавить документ");
 if (!$USER->IsAuthorized()) {
     LocalRedirect('/login/');
 }
@@ -21,10 +22,9 @@ if (!$USER->IsAuthorized()) {
         "USE_EXT" => "N"
     )
 ); ?>
-
 <?
 $APPLICATION->IncludeComponent(
-    "sp:personal.documents",
+    "sp:add.documents",
     "",
     array(
 

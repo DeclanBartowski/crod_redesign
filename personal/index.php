@@ -4,7 +4,7 @@ $APPLICATION->SetTitle("Личный кабинет");
 if (!$USER->IsAuthorized()) {
     LocalRedirect('/login/');
 } else {
-   // LocalRedirect('/personal/results/');
+    LocalRedirect('/personal/results/');
 }
 ?>
 

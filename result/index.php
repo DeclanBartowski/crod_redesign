@@ -7,6 +7,7 @@ if(empty($predmet) &&empty($section)) LocalRedirect('/404.php');
 $GLOBALS['resultFile']['!PROPERTY_RESULT_FILE'] = false;
 $GLOBALS['resultFile']['PROPERTY_RESULT_SUB'] = $predmet;
 $GLOBALS['resultFile']['PROPERTY_RESULT_SECTION'] = $section;
+$GLOBALS['resultFile']['PROPERTY_RESULT_REG'] = $_REQUEST["region"];
 ?>
 <?$APPLICATION->IncludeComponent(
     "bitrix:news.list",

@@ -1,12 +1,12 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->AddChainItem('Просмотр документов', '/personal/documents/');
-$APPLICATION->AddChainItem('Добавить документ', 'javascript:void(0);');
-$APPLICATION->SetTitle("Добавить документ");
+$APPLICATION->AddChainItem('Добавить результат', 'javascript:void(0);');
+$APPLICATION->SetTitle("Добавить результат");
 if (!$USER->IsAuthorized()) {
     LocalRedirect('/login/');
 }
 ?>
+
 <? $APPLICATION->IncludeComponent(
     "bitrix:menu",
     "personal",
@@ -25,7 +25,7 @@ if (!$USER->IsAuthorized()) {
 ); ?>
 <?
 $APPLICATION->IncludeComponent(
-    "sp:add.documents",
+    "sp:add.result",
     "",
     array(
 

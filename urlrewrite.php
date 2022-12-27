@@ -1,6 +1,6 @@
 <?php
 $arUrlRewrite=array (
-  10 => 
+  10 =>
   array (
     'CONDITION' => '#^/information/links/([a-zA-Z0-9_]+)/\\?{0,1}(.*)$#',
     'RULE' => '/information/links/index.php?SECTION_CODE=\\1&\\2',
@@ -8,15 +8,15 @@ $arUrlRewrite=array (
     'PATH' => '',
     'SORT' => 100,
   ),
-  110 => 
+  110 =>
   array (
-    'CONDITION' => '#^/result/([0-9]+)/([0-9]+)/([0-9]+)/#',
-    'RULE' => '/result/index.php?id_sub=$1&id_years=$2&id_step=$3',
+    'CONDITION' => '#^/result/([0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)/#',
+    'RULE' => '/result/index.php?id_sub=$1&id_years=$2&id_step=$3&region=$4',
     'ID' => '',
     'PATH' => '',
     'SORT' => 100,
   ),
-  9 => 
+  9 =>
   array (
     'CONDITION' => '#^/board/([a-zA-Z0-9_]+)/\\?{0,1}(.*)$#',
     'RULE' => '/board/index.php?SECTION_CODE=\\1&\\2',
@@ -24,7 +24,7 @@ $arUrlRewrite=array (
     'PATH' => '',
     'SORT' => 100,
   ),
-  3 => 
+  3 =>
   array (
     'CONDITION' => '#^/nationalnews/#',
     'RULE' => '',
@@ -32,7 +32,7 @@ $arUrlRewrite=array (
     'PATH' => '/nationalnews/index.php',
     'SORT' => 100,
   ),
-  46 => 
+  46 =>
   array (
     'CONDITION' => '#^/commission_m/#',
     'RULE' => '',
@@ -40,7 +40,7 @@ $arUrlRewrite=array (
     'PATH' => '/commission_m/index.php',
     'SORT' => 100,
   ),
-  6 => 
+  6 =>
   array (
     'CONDITION' => '#^/job/vacancy/#',
     'RULE' => '',
@@ -48,7 +48,7 @@ $arUrlRewrite=array (
     'PATH' => '/job/vacancy/index.php',
     'SORT' => 100,
   ),
-  47 => 
+  118 =>
   array (
     'CONDITION' => '#^/method_doc/#',
     'RULE' => '',
@@ -56,7 +56,7 @@ $arUrlRewrite=array (
     'PATH' => '/method_doc/index.php',
     'SORT' => 100,
   ),
-  5 => 
+  5 =>
   array (
     'CONDITION' => '#^/job/resume/#',
     'RULE' => '',
@@ -64,15 +64,7 @@ $arUrlRewrite=array (
     'PATH' => '/job/resume/index.php',
     'SORT' => 100,
   ),
-  116 => 
-  array (
-    'CONDITION' => '#^/normative/#',
-    'RULE' => '',
-    'ID' => 'bitrix:news',
-    'PATH' => '/normative/index.php',
-    'SORT' => 100,
-  ),
-  117 => 
+  117 =>
   array (
     'CONDITION' => '#^/experts_r/#',
     'RULE' => '',
@@ -80,7 +72,15 @@ $arUrlRewrite=array (
     'PATH' => '/experts_r/index.php',
     'SORT' => 100,
   ),
-  115 => 
+  116 =>
+  array (
+    'CONDITION' => '#^/normative/#',
+    'RULE' => '',
+    'ID' => 'bitrix:news',
+    'PATH' => '/normative/index.php',
+    'SORT' => 100,
+  ),
+  115 =>
   array (
     'CONDITION' => '#^/subjects/#',
     'RULE' => '',
@@ -88,7 +88,7 @@ $arUrlRewrite=array (
     'PATH' => '/subjects/index.php',
     'SORT' => 100,
   ),
-  13 => 
+  13 =>
   array (
     'CONDITION' => '#^/experts/#',
     'RULE' => '',
@@ -96,7 +96,7 @@ $arUrlRewrite=array (
     'PATH' => '/experts/index.php',
     'SORT' => 100,
   ),
-  2 => 
+  2 =>
   array (
     'CONDITION' => '#^/themes/#',
     'RULE' => '',
@@ -104,7 +104,7 @@ $arUrlRewrite=array (
     'PATH' => '/themes/index.php',
     'SORT' => 100,
   ),
-  4 => 
+  4 =>
   array (
     'CONDITION' => '#^/forum/#',
     'RULE' => '',
@@ -112,7 +112,7 @@ $arUrlRewrite=array (
     'PATH' => '/forum/index.php',
     'SORT' => 100,
   ),
-  7 => 
+  7 =>
   array (
     'CONDITION' => '#^/photo/#',
     'RULE' => '',
@@ -120,7 +120,7 @@ $arUrlRewrite=array (
     'PATH' => '/photo/index.php',
     'SORT' => 100,
   ),
-  8 => 
+  8 =>
   array (
     'CONDITION' => '#^/blogs/#',
     'RULE' => '',
@@ -128,7 +128,7 @@ $arUrlRewrite=array (
     'PATH' => '/blogs/index.php',
     'SORT' => 100,
   ),
-  0 => 
+  0 =>
   array (
     'CONDITION' => '#^/rest/#',
     'RULE' => '',
@@ -136,7 +136,7 @@ $arUrlRewrite=array (
     'PATH' => '/bitrix/services/rest/index.php',
     'SORT' => 100,
   ),
-  11 => 
+  11 =>
   array (
     'CONDITION' => '#^/news/#',
     'RULE' => '',

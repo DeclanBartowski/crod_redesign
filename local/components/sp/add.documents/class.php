@@ -123,7 +123,10 @@ class AddDocuments extends CBitrixComponent  implements Controllerable
                 $result['SUB'][$section['IBLOCK_SECTION_ID']][] = $section;
             }
         }
-        ksort($result['MAIN']);
+        krsort($result['MAIN']);
+        $year =  array_shift($result['MAIN']);
+        $result['MAIN'] = [];
+        $result['MAIN'][] = $year;
         $this->arResult['YEAR'] = $result;
     }
 

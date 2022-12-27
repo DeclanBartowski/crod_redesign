@@ -113,7 +113,23 @@ $img_svg = CFile::GetPath($arResult['PROPERTIES']['SVG']['VALUE']);
         <div class="tabs-results-box js-tab-block" data-tab="result_<?= $key ?>">
             <ul class="menu">
                 <? foreach ($value as $item): ?>
-                    <li><a href="/result/<?=$arResult['ID']?>/<?=$item['IBLOCK_SECTION_ID']?>/<?=$item['ID']?>/"><?=$item['NAME']?></a></li>
+                    <li class="js-popup-wrap no-close">
+                        <a href="/result/<?=$arResult['ID']?>/<?=$item['IBLOCK_SECTION_ID']?>/<?=$item['ID']?>/" class="js-btn-toggle"><?=$item['NAME']?></a>
+                        <div class="popup-content-block js-popup-block">
+                            <div class="items-wrap items-small">
+                                <?foreach ($item["REGION"] as $region):?>
+                                    <div class="item-wrap">
+                                    <a href="/result/<?=$arResult['ID']?>/<?=$item['IBLOCK_SECTION_ID']?>/<?=$item['ID']?>/<?=$region['ID']?>/" class="item-tile-folder tile-small">
+                                        <span class="tile-ico">
+                                            <img src="<?=SITE_TEMPLATE_PATH?>/img/icons/folder.svg" alt="">
+                                        </span>
+                                        <span class="tile-title"><?=$region['NAME']?></span>
+                                    </a>
+                                </div>
+                                <?endforeach;?>
+                            </div>
+                        </div>
+                    </li>
                 <? endforeach; ?>
             </ul>
         </div>
